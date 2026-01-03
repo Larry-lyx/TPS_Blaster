@@ -60,4 +60,5 @@ private:
 
 public:
 	void SetOverlappingWeapon(AWeapon* InWeapon);
+	bool IsWeaponEquipped();
 };

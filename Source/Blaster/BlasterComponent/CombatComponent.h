@@ -22,12 +22,14 @@ public:
 
 	void EquipWeapon(AWeapon* WeaponToEquip);
 
+	virtual void GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const override;
+
 protected:
 	virtual void BeginPlay() override;
 
 private:
 	UPROPERTY()
 	ABlasterCharacter* Character;
-	UPROPERTY()
+	UPROPERTY(Replicated)
 	AWeapon* EquippedWeapon;
 };
