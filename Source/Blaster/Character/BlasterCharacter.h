@@ -6,6 +6,7 @@
 #include "GameFramework/Character.h"
 #include "BlasterCharacter.generated.h"
 
+class UCombatComponent;
 class AWeapon;
 class UWidgetComponent;
 class UCameraComponent;
@@ -24,6 +25,8 @@ public:
 
 	virtual void GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const override;
 
+	virtual void PostInitializeComponents() override;
+
 protected:
 	virtual void BeginPlay() override;
 
@@ -31,6 +34,8 @@ protected:
 	void MoveRight(float Value);
 	void Turn(float Value);
 	void LookUp(float Value);
+
+	void Equip();
 
 private:
 	UPROPERTY(VisibleAnywhere , Category = "Camera")
@@ -46,6 +51,9 @@ private:
 	AWeapon* OverlappingWeapon;
 	UFUNCTION()
 	void OnRep_OverlappingWeapon(AWeapon* LastWeapon) const;
+
+	UPROPERTY(VisibleAnywhere)
+	UCombatComponent* Combat;
 
 public:
 	void SetOverlappingWeapon(AWeapon* InWeapon);

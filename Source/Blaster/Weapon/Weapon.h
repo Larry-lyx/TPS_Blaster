@@ -49,4 +49,8 @@ private:
 
 	UPROPERTY(EditAnywhere , Category = "Weapon Properties")
 	UWidgetComponent* PickUpWidget;
+
+public:
+	FORCEINLINE void SetWeaponState(EWeaponState State){WeaponState = State ;}
+	FORCEINLINE EWeaponState GetWeaponState() const {return WeaponState;}
 };
