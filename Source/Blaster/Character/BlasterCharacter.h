@@ -35,8 +35,10 @@ protected:
 	void Turn(float Value);
 	void LookUp(float Value);
 
-	void Equip();
+	void EquipButtonPressed();
 	void CrouchButtonPressed();
+	void AimButtonPressed();
+	void AimButtonReleased();
 
 private:
 	UPROPERTY(VisibleAnywhere , Category = "Camera")
@@ -62,4 +64,5 @@ private:
 public:
 	void SetOverlappingWeapon(AWeapon* InWeapon);
 	bool IsWeaponEquipped();
+	bool IsAiming();
 };
