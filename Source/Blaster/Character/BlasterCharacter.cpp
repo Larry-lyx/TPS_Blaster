@@ -133,7 +133,7 @@ void ABlasterCharacter::AimOffset(float DeltaTime)
 	{
 		// Stand Still and Not Jumping
 		FRotator CurrentAimRotation = FRotator(0.f , GetBaseAimRotation().Yaw , 0.f);
-		FRotator DeltaRotation = UKismetMathLibrary::NormalizedDeltaRotator(StartingAimRotation , CurrentAimRotation);
+		FRotator DeltaRotation = UKismetMathLibrary::NormalizedDeltaRotator(CurrentAimRotation , StartingAimRotation);
 		AO_Yaw = DeltaRotation.Yaw;
 		bUseControllerRotationYaw = false;
 	}
@@ -146,6 +146,16 @@ void ABlasterCharacter::AimOffset(float DeltaTime)
 	}
 
 	AO_Pitch = GetBaseAimRotation().Pitch;
+	if (AO_Pitch > 90.f && !IsLocallyControlled())
+	{
+		// map pitch from [270 , 360) to [-90 , 0)
+		// this is because CharacterMovementComponent is using unsigned in to replicate FRotator
+		// but our AimOffset and locally Rotator use signed angle
+
+		FVector2D InRange(270.f , 360.f);
+		FVector2D OutRange(-90.f , 0.f);
+		AO_Pitch = FMath::GetMappedRangeValueClamped(InRange , OutRange , AO_Pitch);
+	}
 }
 
 void ABlasterCharacter::OnRep_OverlappingWeapon(AWeapon* LastWeapon) const
