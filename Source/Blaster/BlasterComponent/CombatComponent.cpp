@@ -54,7 +54,9 @@ void UCombatComponent::FireButtonPressed(bool bPressed)
 
 	if (bFireButtonPressed)
 	{
-		ServerFire();
+		FHitResult TraceHitResult;
+		TraceUnderCrosshairs(TraceHitResult);
+		ServerFire(TraceHitResult.ImpactPoint);
 	}
 	
 }
@@ -90,22 +92,11 @@ void UCombatComponent::TraceUnderCrosshairs(FHitResult& TraceHitResult)
 		if (!TraceHitResult.bBlockingHit)
 		{
 			TraceHitResult.ImpactPoint = End;
-			HitTarget = End;
-		}
-		else
-		{
-			HitTarget = TraceHitResult.ImpactPoint;
-			DrawDebugSphere(
-				GetWorld(),
-				TraceHitResult.ImpactPoint,
-				12.f,
-				12,
-				FColor::Red);
 		}
 	}
 }
 
-void UCombatComponent::MulticastFire_Implementation()
+void UCombatComponent::MulticastFire_Implementation(const FVector_NetQuantize& TraceHitTarget)
 {
 	// When called On Server , executed on both Server and Client
 	if (EquippedWeapon == nullptr) return;
@@ -113,14 +104,14 @@ void UCombatComponent::MulticastFire_Implementation()
 	if (Character)
 	{
 		Character->PlayFireMontage(bAiming);
-		EquippedWeapon->Fire(HitTarget);
+		EquippedWeapon->Fire(TraceHitTarget);
 	}
 }
 
-void UCombatComponent::ServerFire_Implementation()
+void UCombatComponent::ServerFire_Implementation(const FVector_NetQuantize& TraceHitTarget)
 {
 	// Whenever called , executed only on Server
-	MulticastFire();
+	MulticastFire(TraceHitTarget);
 }
 
 void UCombatComponent::ServerSetAiming_Implementation(bool bIsAiming)
@@ -136,9 +127,6 @@ void UCombatComponent::ServerSetAiming_Implementation(bool bIsAiming)
 void UCombatComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-
-	FHitResult TraceHitResult;
-	TraceUnderCrosshairs(TraceHitResult);
 }
 
 void UCombatComponent::EquipWeapon(AWeapon* WeaponToEquip)
