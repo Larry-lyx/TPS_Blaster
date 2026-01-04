@@ -44,12 +44,25 @@ ABlasterCharacter::ABlasterCharacter()
 
 	SetNetUpdateFrequency(66.f);
 	SetMinNetUpdateFrequency(33.f);
+	GetCharacterMovement()->RotationRate = FRotator(0.f , 0.f , 850.f);
 }
 
 void ABlasterCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	
+}
+
+void ABlasterCharacter::Jump()
+{
+	if (bIsCrouched)
+	{
+		UnCrouch();
+	}
+	else
+	{
+		Super::Jump();
+	}
 }
 
 void ABlasterCharacter::MoveForward(float Value)
@@ -258,7 +271,7 @@ void ABlasterCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
-	PlayerInputComponent->BindAction("Jump" , IE_Pressed , this , &ACharacter::Jump);
+	PlayerInputComponent->BindAction("Jump" , IE_Pressed , this , &ABlasterCharacter::Jump);
 	PlayerInputComponent->BindAction("Equip" , IE_Pressed , this , &ABlasterCharacter::EquipButtonPressed);
 	PlayerInputComponent->BindAction("Crouch" , IE_Pressed , this , &ABlasterCharacter::CrouchButtonPressed);
 	PlayerInputComponent->BindAction("Aim" , IE_Pressed , this , &ABlasterCharacter::AimButtonPressed);
