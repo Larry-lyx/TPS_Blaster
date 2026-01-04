@@ -45,6 +45,14 @@ void AWeapon::GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLif
 	DOREPLIFETIME(AWeapon , WeaponState);
 }
 
+void AWeapon::Fire()
+{
+	if (FireAnimation)
+	{
+		WeaponMesh->PlayAnimation(FireAnimation , false);
+	}
+}
+
 void AWeapon::BeginPlay()
 {
 	Super::BeginPlay();

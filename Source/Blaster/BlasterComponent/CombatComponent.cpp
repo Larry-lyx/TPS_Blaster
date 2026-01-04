@@ -51,10 +51,29 @@ void UCombatComponent::FireButtonPressed(bool bPressed)
 {
 	bFireButtonPressed = bPressed;
 
-	if (Character && bFireButtonPressed)
+	if (bFireButtonPressed)
+	{
+		ServerFire();
+	}
+	
+}
+
+void UCombatComponent::MulticastFire_Implementation()
+{
+	// When called On Server , executed on both Server and Client
+	if (EquippedWeapon == nullptr) return;
+
+	if (Character)
 	{
 		Character->PlayFireMontage(bAiming);
+		EquippedWeapon->Fire();
 	}
+}
+
+void UCombatComponent::ServerFire_Implementation()
+{
+	// Whenever called , executed only on Server
+	MulticastFire();
 }
 
 void UCombatComponent::ServerSetAiming_Implementation(bool bIsAiming)
