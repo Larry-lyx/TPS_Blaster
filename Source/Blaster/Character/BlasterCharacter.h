@@ -55,7 +55,7 @@ private:
 	UPROPERTY(ReplicatedUsing = OnRep_OverlappingWeapon)
 	AWeapon* OverlappingWeapon;
 	UFUNCTION()
-	void OnRep_OverlappingWeapon(AWeapon* LastWeapon) const;
+	void OnRep_OverlappingWeapon(const AWeapon* LastWeapon) const;
 
 	UPROPERTY(VisibleAnywhere)
 	UCombatComponent* Combat;
@@ -70,9 +70,10 @@ private:
 
 public:
 	void SetOverlappingWeapon(AWeapon* InWeapon);
-	bool IsWeaponEquipped();
-	bool IsAiming();
+	bool IsWeaponEquipped() const;
+	bool IsAiming() const;
 
 	FORCEINLINE float GetAO_Yaw() const { return AO_Yaw; }
 	FORCEINLINE float GetAO_Pitch() const { return AO_Pitch; }
+	AWeapon* GetEquippedWeapon() const;
 };
