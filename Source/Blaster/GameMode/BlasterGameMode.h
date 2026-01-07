@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Blaster/Character/BlasterCharacter.h"
+#include "Blaster/PlayerController/BlasterPlayerController.h"
 #include "GameFramework/GameMode.h"
 #include "BlasterGameMode.generated.h"
 
@@ -19,4 +20,5 @@ class BLASTER_API ABlasterGameMode : public AGameMode
 
 public:
 	virtual void PlayerEliminated(ABlasterCharacter* ElimCharacter , ABlasterPlayerController* VictimController , ABlasterPlayerController* AttackerController);
+	virtual void RequestRespawn(ACharacter* ElimCharacter , AController* ElimController);
 };

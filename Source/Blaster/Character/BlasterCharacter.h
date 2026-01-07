@@ -38,6 +38,8 @@ public:
 	void UpdateHUDHealth();
 
 	UFUNCTION(NetMulticast , Reliable)
+	void MulticastElim();
+
 	void Elim();
 
 protected:
@@ -128,6 +130,13 @@ private:
 	ABlasterPlayerController* BlasterPlayerController;
 
 	bool bEliminated = false;
+
+	FTimerHandle ElimTimer;
+	
+	UPROPERTY(EditDefaultsOnly)
+	float ElimDelay = 3.f;
+	
+	void ElimTimerFinished();
 
 public:
 	void SetOverlappingWeapon(AWeapon* InWeapon);
