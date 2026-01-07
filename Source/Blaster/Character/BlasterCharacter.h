@@ -5,9 +5,12 @@
 #include "CoreMinimal.h"
 #include "Blaster/BlasterTypes/TurningInPlace.h"
 #include "Blaster/Interface/InteractWithCrosshairsInterface.h"
+#include "Components/TimelineComponent.h"
 #include "GameFramework/Character.h"
 #include "BlasterCharacter.generated.h"
 
+class FOnTimelineFloat;
+class UTimelineComponent;
 class ABlasterPlayerController;
 class UCombatComponent;
 class AWeapon;
@@ -130,13 +133,28 @@ private:
 	ABlasterPlayerController* BlasterPlayerController;
 
 	bool bEliminated = false;
-
 	FTimerHandle ElimTimer;
-	
 	UPROPERTY(EditDefaultsOnly)
 	float ElimDelay = 3.f;
-	
 	void ElimTimerFinished();
+
+	UPROPERTY(VisibleAnywhere)
+	UTimelineComponent* DissolveTimeline;
+	
+	FOnTimelineFloat DissolveTrack;
+	
+	UFUNCTION()
+	void UpdateDissolveMaterial(float DissolveValue);
+	
+	void StartDissolve();
+	
+	UPROPERTY(EditAnywhere)
+	UCurveFloat* DissolveCurve;
+
+	UPROPERTY(VisibleAnywhere , Category = "Elimination")
+	UMaterialInstanceDynamic* DynamicDissolveMaterialInstance;
+	UPROPERTY(EditAnywhere , Category = "Elimination")
+	UMaterialInstance* DissolveMaterialInstance;
 
 public:
 	void SetOverlappingWeapon(AWeapon* InWeapon);
