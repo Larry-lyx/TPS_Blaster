@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Blaster/BlasterTypes/TurningInPlace.h"
+#include "Blaster/Interface/InteractWithCrosshairsInterface.h"
 #include "GameFramework/Character.h"
 #include "BlasterCharacter.generated.h"
 
@@ -14,7 +15,7 @@ class UCameraComponent;
 class USpringArmComponent;
 
 UCLASS()
-class BLASTER_API ABlasterCharacter : public ACharacter
+class BLASTER_API ABlasterCharacter : public ACharacter , public IInteractWithCrosshairsInterface
 {
 	GENERATED_BODY()
 
