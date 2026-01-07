@@ -10,6 +10,8 @@
  * 
  */
 
+class UCharacterOverlay;
+
 USTRUCT(BlueprintType)
 struct FHUDPackage
 {
@@ -39,6 +41,16 @@ class BLASTER_API ABlasterHUD : public AHUD
 
 public:
 	virtual void DrawHUD() override;
+
+	UPROPERTY(EditAnywhere , Category = "Player State")
+	TSubclassOf<UUserWidget> CharacterOverlayClass;
+	
+	UPROPERTY()
+	UCharacterOverlay* CharacterOverlay;
+
+protected:
+	virtual  void BeginPlay() override;
+	void AddCharacterOverlay();
 
 private:
 	FHUDPackage HUDPackage;
