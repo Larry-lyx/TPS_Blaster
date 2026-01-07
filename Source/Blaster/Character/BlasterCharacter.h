@@ -32,10 +32,8 @@ public:
 
 	void PlayFireMontage(bool bAiming);
 
-	UFUNCTION(NetMulticast , Unreliable)
-	void MulticastHit();
-
 	virtual void OnRep_ReplicatedMovement() override;
+	void UpdateHUDHealth();
 
 protected:
 	virtual void BeginPlay() override;
@@ -58,6 +56,9 @@ protected:
 	void AimOffset(float DeltaTime);
 
 	void SimProxiesTurn();
+
+	UFUNCTION()
+	void ReceiveDamage(AActor* DamagedActor, float Damage, const class UDamageType* DamageType, class AController* InstigatedBy, AActor* DamageCauser);
 
 private:
 	UPROPERTY(VisibleAnywhere , Category = "Camera")

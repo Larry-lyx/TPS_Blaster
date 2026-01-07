@@ -59,14 +59,24 @@ void ABlasterCharacter::OnRep_ReplicatedMovement()
 	TimeSinceLastMovementReplication = 0.f;
 }
 
+void ABlasterCharacter::UpdateHUDHealth()
+{
+	BlasterPlayerController = BlasterPlayerController == nullptr ? Cast<ABlasterPlayerController>(Controller) : BlasterPlayerController;
+	if (BlasterPlayerController)
+	{
+		BlasterPlayerController->SetHUDHealth(Health , MaxHealth);
+	}
+}
+
 void ABlasterCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
-	BlasterPlayerController = Cast<ABlasterPlayerController>(Controller);
-	if (BlasterPlayerController)
+	UpdateHUDHealth();
+
+	if (HasAuthority())
 	{
-		BlasterPlayerController->SetHUDHealth(Health , MaxHealth);
+		OnTakeAnyDamage.AddDynamic(this , &ABlasterCharacter::ReceiveDamage);
 	}
 }
 
@@ -255,6 +265,15 @@ void ABlasterCharacter::SimProxiesTurn()
 	TurningInPlace = ETurningInPlace::ETIP_NotTurning;
 }
 
+void ABlasterCharacter::ReceiveDamage(AActor* DamagedActor, float Damage, const class UDamageType* DamageType,
+	class AController* InstigatedBy, AActor* DamageCauser)
+{
+	// Only called on Server
+	Health = FMath::Clamp(Health - Damage, 0.f, MaxHealth);
+	UpdateHUDHealth();
+	PlayHitReactMontage();
+}
+
 void ABlasterCharacter::OnRep_OverlappingWeapon(const AWeapon* LastWeapon) const
 {
 	if (OverlappingWeapon)
@@ -306,11 +325,6 @@ void ABlasterCharacter::TurnInPlace(float DeltaTime)
 	}
 }
 
-void ABlasterCharacter::MulticastHit_Implementation()
-{
-	PlayHitReactMontage();
-}
-
 void ABlasterCharacter::HideCharacterIfCameraClose()
 {
 	if (!IsLocallyControlled()) return;
@@ -334,6 +348,10 @@ void ABlasterCharacter::HideCharacterIfCameraClose()
 
 void ABlasterCharacter::OnRep_Health()
 {
+	// Only called on Client
+	PlayHitReactMontage();
+
+	UpdateHUDHealth();
 }
 
 void ABlasterCharacter::SetOverlappingWeapon(AWeapon* InWeapon)
