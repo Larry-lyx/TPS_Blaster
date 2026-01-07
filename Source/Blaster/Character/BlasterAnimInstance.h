@@ -66,6 +66,9 @@ private:
 
 	UPROPERTY(BlueprintReadOnly, Category = "Combat", meta = (AllowPrivateAccess = "true"))
 	bool bIsLocallyControlled;
+
+	UPROPERTY(BlueprintReadOnly, Category = "Combat", meta = (AllowPrivateAccess = "true"))
+	bool bRotateRootBone;
 	
 	FRotator CharacterRotation;
 	FRotator CharacterRotationLastFrame;
