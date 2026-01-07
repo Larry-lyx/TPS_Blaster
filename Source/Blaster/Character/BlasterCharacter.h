@@ -49,6 +49,8 @@ protected:
 	virtual void BeginPlay() override;
 
 	virtual void Jump() override;
+
+	virtual void Destroyed() override;
 	
 	void MoveForward(float Value);
 	void MoveRight(float Value);
@@ -155,6 +157,14 @@ private:
 	UMaterialInstanceDynamic* DynamicDissolveMaterialInstance;
 	UPROPERTY(EditAnywhere , Category = "Elimination")
 	UMaterialInstance* DissolveMaterialInstance;
+
+	UPROPERTY(EditAnywhere)
+	UParticleSystem* ElimBotEffect;
+	UPROPERTY(VisibleAnywhere)
+	UParticleSystemComponent* ElimBotComponent;
+
+	UPROPERTY(EditAnywhere)
+	USoundBase* ElimBotSound;
 
 public:
 	void SetOverlappingWeapon(AWeapon* InWeapon);
