@@ -39,6 +39,7 @@ protected:
 
 	UFUNCTION()
 	void OnRep_EquippedWeapon();
+	void Fire();
 
 	void FireButtonPressed(bool bPressed);
 	
@@ -90,4 +91,12 @@ private:
 	FVector HitTarget;
 
 	FHUDPackage HUDPackage;
+
+	FTimerHandle FireTimer;
+
+	bool bCanFire = true;
+	bool CanFire();
+	
+	void StartFireTimer();
+	void FireTimerFinished();
 };
