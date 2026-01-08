@@ -2,9 +2,6 @@
 
 
 #include "Weapon.h"
-
-#include <gsl/pointers>
-
 #include "Casing.h"
 #include "Blaster/Character/BlasterCharacter.h"
 #include "Blaster/PlayerController/BlasterPlayerController.h"
@@ -144,6 +141,9 @@ void AWeapon::OnRep_WeaponState()
 		WeaponMesh->SetEnableGravity(true);
 		WeaponMesh->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 		break;
+
+	default:
+		break;
 	}
 }
 
@@ -179,6 +179,12 @@ void AWeapon::SetHUDAmmo()
 	}
 }
 
+void AWeapon::AddAmmo(int32 AmmoToAdd)
+{
+	Ammo = FMath::Clamp(Ammo + AmmoToAdd , 0 , MagCapacity);
+	SetHUDAmmo();
+}
+
 void AWeapon::SpendRound()
 {
 	Ammo = FMath::Clamp(Ammo - 1 , 0 , MagCapacity);
@@ -206,6 +212,9 @@ void AWeapon::SetWeaponState(EWeaponState State)
 		WeaponMesh->SetSimulatePhysics(true);
 		WeaponMesh->SetEnableGravity(true);
 		WeaponMesh->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+		break;
+
+	default:
 		break;
 	}
 }

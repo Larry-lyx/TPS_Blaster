@@ -58,9 +58,14 @@ public:
 	UPROPERTY(EditAnywhere, Category = "Combat")
 	bool bAutomatic = true;
 
+	UPROPERTY(EditAnywhere)
+	USoundBase* EquipSound;
+
 	void Dropped();
 
 	void SetHUDAmmo();
+
+	void AddAmmo(int32 AmmoToAdd);
 
 protected:
 	virtual void BeginPlay() override;
@@ -120,4 +125,6 @@ public:
 	FORCEINLINE USphereComponent* GetAreaSphere() const{return AreaSphere;}
 	FORCEINLINE USkeletalMeshComponent* GetWeaponMesh() const {return WeaponMesh;}
 	FORCEINLINE EWeaponType GetWeaponType() const {return WeaponType;}
+	FORCEINLINE int32 GetMagCapacity() const {return MagCapacity;}
+	FORCEINLINE int32 GetAmmo() const {return Ammo;}
 };

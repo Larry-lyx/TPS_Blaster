@@ -31,6 +31,7 @@ public:
 	void EquipWeapon(AWeapon* WeaponToEquip);
 
 	void Reload();
+	void UpdateAmmoValue();
 
 	virtual void GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const override;
 
@@ -61,6 +62,8 @@ protected:
 	void ServerReload();
 
 	void HandleReload();
+
+	int32 AmountToReload();
 
 	void TraceUnderCrosshairs(FHitResult& TraceHitResult);
 
