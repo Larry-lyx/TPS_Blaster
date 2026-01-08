@@ -6,6 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "Weapon.generated.h"
 
+enum class EWeaponType : uint8;
 class ABlasterPlayerController;
 class ABlasterCharacter;
 class ACasing;
@@ -108,6 +109,9 @@ private:
 	UPROPERTY()
 	ABlasterPlayerController* BlasterOwnerController;
 
+	UPROPERTY(EditAnywhere)
+	EWeaponType WeaponType;
+
 public:
 	void SetWeaponState(EWeaponState State);
 	
@@ -115,4 +119,5 @@ public:
 	
 	FORCEINLINE USphereComponent* GetAreaSphere() const{return AreaSphere;}
 	FORCEINLINE USkeletalMeshComponent* GetWeaponMesh() const {return WeaponMesh;}
+	FORCEINLINE EWeaponType GetWeaponType() const {return WeaponType;}
 };
