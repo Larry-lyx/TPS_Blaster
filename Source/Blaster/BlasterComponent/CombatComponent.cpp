@@ -223,7 +223,7 @@ void UCombatComponent::InterpFOV(float DeltaTime)
 bool UCombatComponent::CanFire()
 {
 	if (EquippedWeapon == nullptr) return false;
-	return bCanFire;
+	return bCanFire && !EquippedWeapon->IsEmpty();
 }
 
 void UCombatComponent::StartFireTimer()
