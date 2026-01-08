@@ -9,6 +9,7 @@
 #include "GameFramework/Character.h"
 #include "BlasterCharacter.generated.h"
 
+class ABlasterPlayerState;
 class FOnTimelineFloat;
 class UTimelineComponent;
 class ABlasterPlayerController;
@@ -72,6 +73,9 @@ protected:
 	UFUNCTION()
 	void ReceiveDamage(AActor* DamagedActor, float Damage, const class UDamageType* DamageType, class AController* InstigatedBy, AActor* DamageCauser);
 
+	// poll for any relevant classes and initialize HUD
+	void PollInit();
+	
 private:
 	UPROPERTY(VisibleAnywhere , Category = "Camera")
 	USpringArmComponent* CameraBoom;
@@ -133,6 +137,9 @@ private:
 
 	UPROPERTY()
 	ABlasterPlayerController* BlasterPlayerController;
+
+	UPROPERTY()
+	ABlasterPlayerState* BlasterPlayerState;
 
 	bool bEliminated = false;
 	FTimerHandle ElimTimer;

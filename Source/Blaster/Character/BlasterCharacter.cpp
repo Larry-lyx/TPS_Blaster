@@ -7,6 +7,7 @@
 #include "Blaster/BlasterComponent/CombatComponent.h"
 #include "Blaster/GameMode/BlasterGameMode.h"
 #include "Blaster/PlayerController/BlasterPlayerController.h"
+#include "Blaster/PlayerState/BlasterPlayerState.h"
 #include "Blaster/Weapon/Weapon.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
@@ -358,6 +359,18 @@ void ABlasterCharacter::ReceiveDamage(AActor* DamagedActor, float Damage, const 
 	}
 }
 
+void ABlasterCharacter::PollInit()
+{
+	if (BlasterPlayerState == nullptr)
+	{
+		BlasterPlayerState = GetPlayerState<ABlasterPlayerState>();
+		if (BlasterPlayerState)
+		{
+			BlasterPlayerState->AddToScore(0.f);
+		}
+	}
+}
+
 void ABlasterCharacter::OnRep_OverlappingWeapon(const AWeapon* LastWeapon) const
 {
 	if (OverlappingWeapon)
@@ -524,6 +537,7 @@ void ABlasterCharacter::Tick(float DeltaTime)
 	}
 	
 	HideCharacterIfCameraClose();
+	PollInit();
 }
 
 void ABlasterCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
