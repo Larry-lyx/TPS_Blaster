@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Blaster/BlasterTypes/CombatTypes.h"
 #include "Blaster/HUD/BlasterHUD.h"
 #include "Blaster/Weapon/WeaponTypes.h"
 #include "Components/ActorComponent.h"
@@ -10,6 +11,7 @@
 
 #define TRACE_LENGTH 80000.f
 
+enum class ECombatState : uint8;
 class ABlasterHUD;
 class ABlasterPlayerController;
 class AWeapon;
@@ -31,6 +33,9 @@ public:
 	void Reload();
 
 	virtual void GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const override;
+
+	UFUNCTION(BlueprintCallable)
+	void FinishReloading();
 
 protected:
 	virtual void BeginPlay() override;
@@ -54,6 +59,8 @@ protected:
 
 	UFUNCTION(Server, Reliable)
 	void ServerReload();
+
+	void HandleReload();
 
 	void TraceUnderCrosshairs(FHitResult& TraceHitResult);
 
@@ -113,6 +120,11 @@ private:
 
 	void InitializeCarriedAmmo();
 
+	UPROPERTY(ReplicatedUsing = OnRep_CombatState)
+	ECombatState CombatState = ECombatState::ECS_Unoccupied;
+	UFUNCTION()
+	void OnRep_CombatState();
+	
 	bool bCanFire = true;
 	bool CanFire();
 	
